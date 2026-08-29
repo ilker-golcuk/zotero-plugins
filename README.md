@@ -99,11 +99,6 @@ Download the `.xpi` from
 [**Releases**](https://github.com/ilker-golcuk/zotero-plugins/releases), then in
 Zotero: **Tools → Plugins** → gear icon → **Install Plugin From File…**
 
-**This repository is private**, so release assets are not anonymously
-downloadable. Fetch them while signed in, or with
-`gh release download ref-verifier-v1.0.0 -R ilker-golcuk/zotero-plugins`, or
-build the `.xpi` yourself from the source below.
-
 The `.xpi` files are not committed to the tree — they are build artefacts, and
 keeping them in git invites the packaged version drifting out of step with the
 source. Each release is built from the source at its tag.
@@ -116,25 +111,29 @@ zip -qr ../my-plugin.xpi manifest.json bootstrap.js chrome
 
 Bump `version` in `manifest.json` when reinstalling over an existing copy.
 
-### Auto-update: wired, but inactive
+### Auto-update
 
 Both manifests point `update_url` at [`update.json`](update.json) in this
-repository, which names the current version and the release asset to fetch.
-The wiring is correct and follows the format Zotero's `AddonUpdateChecker`
-expects.
+repository, in the format Zotero's `AddonUpdateChecker` expects. Zotero checks
+it once a day (`extensions.update.interval`, with `extensions.update.enabled`
+and `autoUpdateDefault` both on by default), so an installed copy picks up new
+releases on its own.
 
-**It does nothing while this repository is private.** Zotero fetches that URL
-anonymously, and both `raw.githubusercontent.com/.../update.json` and the
-release asset return 404 without credentials. Installed copies will never see an
-update; the check simply fails, which is harmless but not what the wiring
-promises. Installing and updating is therefore manual today.
+Cut a release with the script rather than by hand:
 
-Two ways to make it real:
+```bash
+./release.sh ref-verifier
+```
 
-* Make the repository public — the existing wiring then works with no changes.
-* Keep the source private and publish only `update.json` and the `.xpi` files
-  somewhere anonymously reachable (a small public repo, GitHub Pages, any static
-  host), then point `update_url` there.
+It reads the version from that plugin's `manifest.json`, refuses to run if the
+plugin has uncommitted changes, builds the `.xpi`, creates or replaces the
+matching release, and **regenerates `update.json` from the manifests** before
+committing it.
+
+`update.json` is generated, never edited. Editing it by hand is how this breaks:
+bump `version` but leave `update_link` pointing at the previous tag, and Zotero
+announces an update and then installs the old build — silently, with no error
+anywhere. Generating the file makes that state unrepresentable.
 
 Compatibility is declared as Zotero `8.999`–`10.*`. Zotero 11 will refuse to
 install these until the range is widened, which is deliberate: the plugin APIs

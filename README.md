@@ -99,6 +99,11 @@ Download the `.xpi` from
 [**Releases**](https://github.com/ilker-golcuk/zotero-plugins/releases), then in
 Zotero: **Tools → Plugins** → gear icon → **Install Plugin From File…**
 
+**This repository is private**, so release assets are not anonymously
+downloadable. Fetch them while signed in, or with
+`gh release download ref-verifier-v1.0.0 -R ilker-golcuk/zotero-plugins`, or
+build the `.xpi` yourself from the source below.
+
 The `.xpi` files are not committed to the tree — they are build artefacts, and
 keeping them in git invites the packaged version drifting out of step with the
 source. Each release is built from the source at its tag.
@@ -111,10 +116,25 @@ zip -qr ../my-plugin.xpi manifest.json bootstrap.js chrome
 
 Bump `version` in `manifest.json` when reinstalling over an existing copy.
 
-Both plugins auto-update: their `update_url` points at
-[`update.json`](update.json) in this repository, which lists the current version
-and the release asset to fetch. Publishing a new release and bumping the version
-in `update.json` is enough for installed copies to offer the update.
+### Auto-update: wired, but inactive
+
+Both manifests point `update_url` at [`update.json`](update.json) in this
+repository, which names the current version and the release asset to fetch.
+The wiring is correct and follows the format Zotero's `AddonUpdateChecker`
+expects.
+
+**It does nothing while this repository is private.** Zotero fetches that URL
+anonymously, and both `raw.githubusercontent.com/.../update.json` and the
+release asset return 404 without credentials. Installed copies will never see an
+update; the check simply fails, which is harmless but not what the wiring
+promises. Installing and updating is therefore manual today.
+
+Two ways to make it real:
+
+* Make the repository public — the existing wiring then works with no changes.
+* Keep the source private and publish only `update.json` and the `.xpi` files
+  somewhere anonymously reachable (a small public repo, GitHub Pages, any static
+  host), then point `update_url` there.
 
 Compatibility is declared as Zotero `8.999`–`10.*`. Zotero 11 will refuse to
 install these until the range is widened, which is deliberate: the plugin APIs

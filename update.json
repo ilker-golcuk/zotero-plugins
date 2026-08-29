@@ -1,10 +1,10 @@
 {
   "addons": {
-    "ref-verifier@ilker.local": {
+    "pdf-exporter@ilker.local": {
       "updates": [
         {
           "version": "1.0.0",
-          "update_link": "https://github.com/ilker-golcuk/zotero-plugins/releases/download/ref-verifier-v1.0.0/ref-verifier.xpi",
+          "update_link": "https://github.com/ilker-golcuk/zotero-plugins/releases/download/pdf-exporter-v1.0.0/pdf-exporter.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "8.999",
@@ -14,11 +14,11 @@
         }
       ]
     },
-    "pdf-exporter@ilker.local": {
+    "ref-verifier@ilker.local": {
       "updates": [
         {
           "version": "1.0.0",
-          "update_link": "https://github.com/ilker-golcuk/zotero-plugins/releases/download/pdf-exporter-v1.0.0/pdf-exporter.xpi",
+          "update_link": "https://github.com/ilker-golcuk/zotero-plugins/releases/download/ref-verifier-v1.0.0/ref-verifier.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "8.999",

@@ -111,8 +111,15 @@ zip -qr ../my-plugin.xpi manifest.json bootstrap.js chrome
 
 Bump `version` in `manifest.json` when reinstalling over an existing copy.
 
-The `update_url` in both manifests is a placeholder — there is no update server.
-Zotero requires the field to be present, but a failing update check is harmless.
+Both plugins auto-update: their `update_url` points at
+[`update.json`](update.json) in this repository, which lists the current version
+and the release asset to fetch. Publishing a new release and bumping the version
+in `update.json` is enough for installed copies to offer the update.
+
+Compatibility is declared as Zotero `8.999`–`10.*`. Zotero 11 will refuse to
+install these until the range is widened, which is deliberate: the plugin APIs
+they use were verified against Zotero 10 specifically, and Zotero 10 changed
+enough from 7 that claiming forward compatibility would be a guess.
 
 ---
 
@@ -123,7 +130,7 @@ stub the parts of the Zotero API each plugin touches, and exercise the logic
 directly. They run on plain Node with no dependencies:
 
 ```bash
-cd ref-verifier/tests && node suite.mjs && node types-suite.mjs   # 136 tests
+cd ref-verifier/tests && node suite.mjs && node types-suite.mjs   # 143 tests
 cd pdf-exporter && node tests/suite.mjs                           # 21 tests
 ```
 
@@ -133,6 +140,16 @@ version is on the machine. That is how the schema-44 field additions above were
 noticed.
 
 ---
+
+## Privacy
+
+`ref-verifier` sends the DOI, title, author surname and year of the items you
+select to **Crossref** (`api.crossref.org`) and **OpenAlex**
+(`api.openalex.org`) in order to look them up. Nothing else leaves the machine:
+no library dump, no account identifier, no telemetry, and nothing at all until
+you run the action on a selection. No API keys are used or required.
+
+`pdf-exporter` makes no network requests whatsoever.
 
 ## Licence
 

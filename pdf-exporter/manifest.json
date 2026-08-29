@@ -10,9 +10,9 @@
   "applications": {
     "zotero": {
       "id": "pdf-exporter@ilker.local",
-      "update_url": "https://example.com/pdf-exporter/update.json",
+      "update_url": "https://raw.githubusercontent.com/ilker-golcuk/zotero-plugins/main/update.json",
       "strict_min_version": "8.999",
-      "strict_max_version": "10.0.*"
+      "strict_max_version": "10.*"
     }
   }
 }

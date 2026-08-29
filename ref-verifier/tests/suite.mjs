@@ -137,6 +137,36 @@ console.log("\n===== 7. Yazar kontrolleri =====");
   check("baş harf varsa dokunma (yanlış alarm yok)", !dget(initials, "Authors"), `→ ${labels(initials)}`);
 }
 
+console.log("\n===== 7b. REGRESYON: yazar düzeltmesi diğer katkıcıları silmemeli =====");
+{
+  // Zotero'nun setCreators() verilen diziden fazlasını siler. Yazar önerisine
+  // sadece Crossref yazarları konursa editör/çevirmen yok olur.
+  const editor = { creatorTypeID: "editor", lastName: "Kaplan", firstName: "Ayse" };
+  const translator = { creatorTypeID: "translator", lastName: "Demir", firstName: "Can" };
+
+  const wrong = await verify(base({}, [["Abikoya", "Jelena"], editor, translator]));
+  const dw = dget(wrong, "Authors");
+  check("yanlış yazar → öneri var", !!dw, `→ ${labels(wrong)}`);
+  if (dw) {
+    const types = dw.rawProposed.map(c => c.creatorTypeID || c.creatorType);
+    check("  editör korunuyor", types.includes("editor"), `→ ${JSON.stringify(types)}`);
+    check("  çevirmen korunuyor", types.includes("translator"), `→ ${JSON.stringify(types)}`);
+    check("  editörün adı bozulmuyor",
+      dw.rawProposed.some(c => c.lastName === "Kaplan" && c.firstName === "Ayse"));
+    check("  yazar listesi yine de düzeltiliyor",
+      dw.rawProposed.some(c => c.lastName === "Abikova"),
+      `→ ${JSON.stringify(dw.rawProposed.map(c => c.lastName))}`);
+  }
+
+  const fill = await verify(base({}, [["Abikova", ""], editor]));
+  const df = dget(fill, "Authors");
+  check("ad doldurma önerisinde de editör korunuyor",
+    !!df && df.rawProposed.some(c => (c.creatorTypeID || c.creatorType) === "editor"),
+    `→ ${JSON.stringify(df?.rawProposed)}`);
+  check("  yazar karşılaştırması editörü yazar sanmıyor",
+    !!df && df.current === "Abikova", `→ "${df?.current}"`);
+}
+
 console.log("\n===== 8. Kırık DOI =====");
 {
   const r = await verify(base({ DOI: "10.9999/bogus-doi-xyz" }));

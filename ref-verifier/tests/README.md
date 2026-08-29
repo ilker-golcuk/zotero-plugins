@@ -3,7 +3,7 @@
 Plain Node, no dependencies:
 
 ```bash
-node suite.mjs        # 79 unit tests
+node suite.mjs        # 86 unit tests
 node types-suite.mjs  # 57 item-type + Unicode tests
 node map.mjs          # prints the base-field mapping table per item type
 node sweep.mjs        # scans your real Zotero library (Zotero must be running)

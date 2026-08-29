@@ -183,6 +183,16 @@ function authorsOf(item) {
 	return item.getCreators().filter(c => c.creatorTypeID === authorTypeID);
 }
 
+/* Zotero's setCreators() replaces the whole creator list and drops anything
+   past the array it is given, so editors, translators and every other creator
+   type have to be carried across or accepting an author fix would delete them.
+   getCreators() already returns copies carrying creatorTypeID, which setCreator
+   accepts as-is. */
+function nonAuthorsOf(item) {
+	let authorTypeID = Zotero.CreatorTypes.getID("author");
+	return item.getCreators().filter(c => c.creatorTypeID !== authorTypeID);
+}
+
 // ---------- HTTP ----------
 
 async function getJSON(url) {
@@ -419,7 +429,7 @@ function compareAuthors(item, crAuthors) {
 			note: why,
 			current: zNames.join("; ") || "(empty)",
 			proposed: cNames.join("; "),
-			rawProposed: crAuthors,
+			rawProposed: crAuthors.concat(nonAuthorsOf(item)),
 			agrees: false,
 			conflict: true,
 			serious: true,
@@ -444,7 +454,7 @@ function compareAuthors(item, crAuthors) {
 			note: "given names missing",
 			current: zNames.join("; "),
 			proposed: merged.map(c => `${c.lastName}, ${c.firstName}`.replace(/, $/, "")).join("; "),
-			rawProposed: merged,
+			rawProposed: merged.concat(nonAuthorsOf(item)),
 			agrees: false,
 			conflict: false,
 			serious: false,

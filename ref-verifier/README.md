@@ -72,8 +72,15 @@ match.
 **Author names.** Only surnames are compared. Crossref writes given names as
 `"AJ"` where Zotero writes `"A. J."`; that difference is a convention, not an
 error. When surnames don't line up the row is shown but left **unticked**,
-because applying it replaces the whole creator list. When surnames match and
-Zotero is simply missing given names, filling them in is offered pre-ticked.
+because applying it replaces the item's entire author list with Crossref's.
+When surnames match and Zotero is simply missing given names, filling them in is
+offered pre-ticked.
+
+Accepting an author row rewrites **authors only**. Editors, translators and
+every other creator type on the item are carried across untouched — Zotero's
+`setCreators()` replaces the whole creator array and discards anything past the
+list it is handed, so they have to be re-supplied explicitly or they would be
+silently deleted. This is covered by a regression test.
 
 **Matching without a DOI.** Only the title vouches for the match, and papers by
 the same group on the same topic score deceptively high. A real case: a 2024
@@ -96,13 +103,19 @@ item's type rewrites its whole field set.
 
 ---
 
+## Privacy
+
+Verification sends the selected items' DOI, title, first-author surname and year
+to Crossref and OpenAlex to look them up. Nothing else is transmitted, nothing
+is sent until you run the action, and no API key is involved.
+
 ## Reliability
 
-**136 tests, all passing.**
+**143 tests, all passing.**
 
 ```bash
 cd tests
-node suite.mjs        # 79 unit tests
+node suite.mjs        # 86 unit tests
 node types-suite.mjs  # 57 item-type and Unicode tests
 node map.mjs          # prints the base-field mapping table
 node sweep.mjs        # scans your real library, read-only, reports only

@@ -82,9 +82,11 @@ export function makeItem(type, fields, authors) {
     itemTypeID: type,
     isRegularItem: () => true,
     getField: k => fields[k] ?? "",
-    getCreators: () => (authors || []).map(a => Array.isArray(a)
-      ? { creatorTypeID: "author", lastName: a[0], firstName: a[1] ?? "" }
-      : { creatorTypeID: "author", lastName: a, firstName: "" }),
+    getCreators: () => (authors || []).map(a => {
+      if (Array.isArray(a)) return { creatorTypeID: "author", lastName: a[0], firstName: a[1] ?? "" };
+      if (typeof a === "object") return { ...a };   // editor/translator vb.
+      return { creatorTypeID: "author", lastName: a, firstName: "" };
+    }),
   };
 }
 export const stats = { pass: 0, fail: 0, failures: [] };

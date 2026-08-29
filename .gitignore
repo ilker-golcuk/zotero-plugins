@@ -1,4 +1,23 @@
+# Build artefacts — releases are cut from source, not committed
+*.xpi
+
 # Regenerated on first test run; goes stale and would mask upstream metadata fixes
 http-cache.json
-*.xpi
+
+# Secrets — nothing here today, and nothing should arrive by accident
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.keystore
+secrets.json
+credentials.json
+.netrc
+
+# OS / editor noise
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

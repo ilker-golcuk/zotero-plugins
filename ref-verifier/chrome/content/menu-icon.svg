@@ -1,0 +1,6 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 2H3.6V3.5H2.4V12.5H3.6V14H1V2Z" fill="context-fill"/>
+  <path d="M15 2H12.4V3.5H13.6V12.5H12.4V14H15V2Z" fill="context-fill"/>
+  <rect x="4.485" y="9.1" width="2.83" height="2" rx="1" transform="rotate(45 5.9 10.1)" fill="context-fill"/>
+  <rect x="5.4" y="7.15" width="7.3" height="2" rx="1" transform="rotate(-53.9 9.05 8.15)" fill="context-fill"/>
+</svg>

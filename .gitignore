@@ -1,0 +1,4 @@
+# Regenerated on first test run; goes stale and would mask upstream metadata fixes
+http-cache.json
+*.xpi
+.DS_Store

@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Reference Verifier",
+  "version": "1.0.0",
+  "description": "Verify item metadata (journal, volume, issue, year, pages, DOI) against Crossref, cross-checked with OpenAlex.",
+  "icons": {
+    "48": "chrome/content/icon.svg",
+    "96": "chrome/content/icon.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "ref-verifier@ilker.local",
+      "update_url": "https://example.com/ref-verifier/update.json",
+      "strict_min_version": "8.999",
+      "strict_max_version": "10.0.*"
+    }
+  }
+}

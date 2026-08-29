@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "PDF Exporter",
+  "version": "1.0.0",
+  "description": "Copy the PDFs of selected items into a folder you choose, named after the reference.",
+  "icons": {
+    "48": "chrome/content/icon.svg",
+    "96": "chrome/content/icon.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "pdf-exporter@ilker.local",
+      "update_url": "https://example.com/pdf-exporter/update.json",
+      "strict_min_version": "8.999",
+      "strict_max_version": "10.0.*"
+    }
+  }
+}
